@@ -35,3 +35,14 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
 - [220 Ohm Resistor][https://www.amazon.com/dp/B07QK9ZBVZ] (Quantity 5)
 - Wire, solder, PLA filament, zip ties, etc.
+
+# Electrical Circuit
+<img width="1196" height="696" alt="image" src="https://github.com/user-attachments/assets/f79f268d-433b-4f72-aa36-3e7288a7fcd2" />
+
+ # CAD Designs
+ <img width="293" height="489" alt="image" src="https://github.com/user-attachments/assets/d421cab5-d959-4607-b82d-009cb31ec9aa" />
+ <img width="309" height="491" alt="image" src="https://github.com/user-attachments/assets/1fe33fa7-5465-4f63-8d3d-09754b71baa6" />
+ <img width="735" height="522" alt="image" src="https://github.com/user-attachments/assets/a4f3be4d-176a-4311-a6a9-f49854159f1b" />
+ <img width="703" height="622" alt="image" src="https://github.com/user-attachments/assets/f135685f-7c70-4428-9296-1cac9cc16f33" />
+ <img width="754" height="504" alt="image" src="https://github.com/user-attachments/assets/4eb01ff9-87ce-4d5b-b19e-353c741b00dd" />
+ <img width="681" height="447" alt="image" src="https://github.com/user-attachments/assets/d7d9d3c0-115e-4b3b-942c-d51dd36f27ee" />
