@@ -61,61 +61,68 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - Controller Cover (x5)
 
 ## Shock Circuits
-To build the shock circuit, disassemble a toy shock pin by unscrewing the tip and breaking the middle black portion from the silver top portion.
-Using pliers for grip, pull the black tube out of the top.
-There will be a blue capacitor, a very small circuit board with a white osscilator dot in the middle, three small batteries, and a spring.
-Remove the blue capacitor by unbending the lower terminal wire.
-Solder two terminals of the capcitor to the pads on the circuit board they were touching when in the pen.
-Solder a wire to the other terminal of the capcitor.
-Solder two wires to the other two pads on the other end of the circuit board.
-If you apply 3-6 volts to those two wires and then touch the ground wire and the 3rd terminal of the capacitor you will receive a shock.
-Reuse the batteries for some other project.
+- To build the shock circuit, disassemble a toy shock pin by unscrewing the tip and breaking the middle black portion from the silver top portion.
+- Using pliers for grip, pull the black tube out of the top.
+- There will be a blue capacitor, a very small circuit board with a white osscilator dot in the middle, three small batteries, and a spring.
+- Remove the blue capacitor by unbending the lower terminal wire.
+- Solder two terminals of the capcitor to the pads on the circuit board they were touching when in the pen.
+- Solder a wire to the other terminal of the capcitor.
+- Solder two wires to the other two pads on the other end of the circuit board.
+- If you apply 3-6 volts to those two wires and then touch the ground wire and the 3rd terminal of the capacitor you will receive a shock.
+- Reuse the batteries for some other project.
+
 <img width="1340" height="711" alt="image" src="https://github.com/user-attachments/assets/c2ca1e09-a3b7-4e19-afbe-a58d9ecb0b31" />
 
 
 ## Controllers
-Prepare to build the controllers by cutting the aluminum bar stock to 60mm lengths for each electrode.  
-Drill and tap a hole for an M3 screw in each.  The holes should by 7mm from the top and 7mm from the outside edge of each bar.
+- Prepare to build the controllers by cutting the aluminum bar stock to 60mm lengths for each electrode.  
+- Drill and tap a hole for an M3 screw in each.  The holes should by 7mm from the top and 7mm from the outside edge of each bar.
+
 <img width="709" height="294" alt="image" src="https://github.com/user-attachments/assets/cf31b7a1-7da7-4743-9acf-5cbc60ac19d8" />
+
 <img width="1476" height="809" alt="image" src="https://github.com/user-attachments/assets/7dc9b833-abec-4484-82ee-39ea0d0571df" />
-Round the outside corners of each and polish.
-Cut the 4 conductor wire into 5 30" lengths.
-Assemble all the parts (including 3mm screws and washers)
+
+- Round the outside corners of each and polish.
+- Cut the 4 conductor wire into 5 30" lengths.
+- Assemble all the parts (including 3mm screws and washers)
+
 <img width="796" height="743" alt="image" src="https://github.com/user-attachments/assets/28510b57-99c4-4491-a770-e9337ebd69e2" />
-Cut the wires from the buttons and remove any reaminign heat shrink.
-Strip 90mm of the outside cover from one end of each wire and strip and tin the ends of each conductor.  
-For each controller, insert the wires from the bottom.  
-Solder two wires (red and white) to the two button terminals.
-Using and m3 screw and washer, secure the other two wires to two electrode bars.
-Secure a zip-tie around the 4 conductor wire where it exits the hole in the bottom of the controller.
-Place the bars into the slots on the cover and slide the cover under the top of the controller.
-Secure the cover in place with one 3 screw.
+
+- Cut the wires from the buttons and remove any reaminign heat shrink.
+- Strip 90mm of the outside cover from one end of each wire and strip and tin the ends of each conductor.  
+- For each controller, insert the wires from the bottom.  
+-- Solder two wires (red and white) to the two button terminals.
+-- Using and m3 screw and washer, secure the other two wires to two electrode bars.
+-- Secure a zip-tie around the 4 conductor wire where it exits the hole in the bottom of the controller.
+-- Place the bars into the slots on the cover and slide the cover under the top of the controller.
+-- Secure the cover in place with one 3 screw.
 
 ## LEDs
-Cut the WS2812 LED strip into 4 lengths of 4 LEDs.  Be sure to cut at designated cut lines on the strip.
-Solder 3 wires (5v, data, ground) between each strip.  Be certain to keep the arrows pointing in the same direction.
-Using a hot glue gun, glue the strips into the top of the game so that the LEDs align with the holes.
-Cover each strip with tape.
+- Cut the WS2812 LED strip into 4 lengths of 4 LEDs.  Be sure to cut at designated cut lines on the strip.
+- Solder 3 wires (5v, data, ground) between each strip.  Be certain to keep the arrows pointing in the same direction.
+- Using a hot glue gun, glue the strips into the top of the game so that the LEDs align with the holes.
+- Cover each strip with tape.
 
 ## Start Button
-CA glue the 12mm button switch to the start button mount panel with the pins sticking through the holes.
-Solder wires to two pins on one side of the switch.
-Place the start button into the top, cover, and attach the switch cover to the top with 5 screws.
+- CA glue the 12mm button switch to the start button mount panel with the pins sticking through the holes.
+- Solder wires to two pins on one side of the switch.
+- Place the start button into the top, cover, and attach the switch cover to the top with 5 screws.
 
 ## Knobs and Switches
-Solder wires to the terminals of the 3 and 4 position switches.
-Insert each rotary switch into the top, secure with the provided washer and nut, and attach a knob.
-For the intesity control, the on-board potentiometer on the LM2596 DC-DC Buck Converter needs to be replaced with the 1k rotary potentiometer.
-Using a soldering iron, remove the blue pot.
-Solder wires to the 3 terminals of the 1k rotary pot and solder the other ends to the LM2596.
-Insert the rotary pot into the top, secure with the provided washer and nut, and attach a knob.
-Insert the digital voltage display into the top and secure with 2 m2 screws.
-Insert the power toggle switch into the side of the top unit.
+- Solder wires to the terminals of the 3 and 4 position switches.
+- Insert each rotary switch into the top, secure with the provided washer and nut, and attach a knob.
+- For the intesity control, the on-board potentiometer on the LM2596 DC-DC Buck Converter needs to be replaced with the 1k rotary potentiometer.
+- Using a soldering iron, remove the blue pot.
+- Solder wires to the 3 terminals of the 1k rotary pot and solder the other ends to the LM2596.
+- Insert the rotary pot into the top, secure with the provided washer and nut, and attach a knob.
+- Insert the digital voltage display into the top and secure with 2 m2 screws.
+- Insert the power toggle switch into the side of the top unit.
+
 <img width="478" height="741" alt="image" src="https://github.com/user-attachments/assets/eecc35b5-58fc-494f-8261-a186e5036b13" />
 
 ## Wiring
-Thread each controller wire into the holes on the side of the top unit.
-Connect the switches, controllers, etc. according to the diagram above.
+- Thread each controller wire into the holes on the side of the top unit.
+- Connect the switches, controllers, etc. according to the diagram above.
 
 
 
