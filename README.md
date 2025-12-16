@@ -11,16 +11,16 @@ This improved version supports 2-5 players and adds a second "memory" game optio
 - Memory Sequence game mode
 - "Test" game mode
 - Up to 5 players
-- Variable intesity adjustment knob to control shock
+- Variable intensity adjustment knob to control shock
 - Digital intensity display
-- 30 mutli-colored LEDs
+- 30 multi-colored LEDs
 - Sound
 
 # Play
 ## Reaction Mode
-Turn the game mode knob to Reaction and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  The digial display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6 volts is the maximum and hurts.
+Turn the game mode knob to Reaction and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  The digital display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6 volts is the maximum and hurts.
 
-Press the Start button (big white button in center) to start a round of play.  A sound and animation will play, followed by a random length of quiet time (2-10 seconds) and then all the LEDs will turn white a a beep will sound.  Each player should press the button on the their controller as soon as they sense the lights and sound.  The LEDs will illuminate to indicate the order the buttons were pressed.  The player with the fastest reaction time will show 1 blue LED, the seconds fastest 2 blue LEDs, etc. until the last player.  That player will show 4 blinking red LEDs and will have received a 100 ms shock.
+Press the Start button (big white button in center) to start a round of play.  A sound and animation will play, followed by a random length of quiet time (2-10 seconds) and then all the LEDs will turn white and a beep will sound.  Each player should press the button on the their controller as soon as they sense the lights and sound.  The LEDs will illuminate to indicate the order the buttons were pressed.  The player with the fastest reaction time will show 1 blue LED, the seconds fastest 2 blue LEDs, etc. until the last player.  That player will show 4 blinking red LEDs and will have received a 100 ms shock.
 
 The game has cheat detection.  Any player who has their button depressed when the game switches from delay to all white LEDs will be deemed a cheater.  All 4 of their LEDs will blink red and they will receive a 1 second shock for cheating.
 
@@ -29,7 +29,7 @@ After 5 seconds, the game will again display LED animation and wait for the next
 ## Memory Mode
 Turn the game mode knob to Memory and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
-Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimiced correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
+Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate, and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
 
 Five seconds after a mistake, the game will again display LED animation and wait for the net press of the Start button for another round.
 
@@ -44,7 +44,7 @@ After 5 seconds, the game will again display LED animation and wait for the next
 The game uses an Arduino micro-controller to handle the logic.  The shock circuits are harvested from toy shock pens and use a flyback transformer and oscillator operating at between 2.5-6 volts.  The controllers house a momentary button and two polished aluminum electrodes along the sides.  The base houses the control knobs, voltage display, LEDs, and center start button.  Most of the parts are 3D printed in PLA.
 
 # Parts List
-- [Arduino Nano](https://www.amazon.com/Arduino-A000005-ARDUINO-Nano/dp/B0097AU5OU)
+- [Arduino R4 Minima](https://www.amazon.com/Arduino-UNO-Minima-ABX00080-Connector/dp/B0C78K4CD4/ref=sr_1_3)
 - [Battery Holder (8 AA)](https://www.amazon.com/dp/B07WP1CYYW)
 - [Mini ON and Off Rocker Switch 12V 20A T85 2 Pin SPST](https://www.amazon.com/dp/B07S2QJKTX)
 - [Momentary Tactile Push Button, 12 x 12 mm x 4.3 mm](https://www.amazon.com/TWTADE-Momentary-Tactile-Button-Switch/dp/B07CG6HVY9)
@@ -57,15 +57,19 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
 - [Aluminum Flat Plate Bar Stock 3 x 10 x 305mm T6511](https://www.amazon.com/dp/B0CZ4F77TL)
 - [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- [2N2222 NPN Tranistor](https://en.wikipedia.org/wiki/2N2222) (Quantity 5)
+- [2N2222 NPN Transistor](https://en.wikipedia.org/wiki/2N2222) (Quantity 5)
 - [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
 - [220 Ohm Resistor](https://www.amazon.com/dp/B07QK9ZBVZ) (Quantity 5)
 - Wire, solder, PLA filament, zip ties, screws, etc.
 
 # Electrical Circuit
-<img width="1196" height="696" alt="image" src="https://github.com/user-attachments/assets/f79f268d-433b-4f72-aa36-3e7288a7fcd2" />
+The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC Buck Converter.  The output of the buck converter is controlled by an "intensity" rotary 0-1k poteniometer knob, resulting in 2-6v DC output to drive the shock circuits.  The output voltage is displayed on a 3 digit 8-segment display.  The shock circuits use a flyback transformer (looks like a blue capacitor) and a small oscillator.  Each shock circuit is controlled by and isolated from the Arduino via a 2N2222 NPN transistor, pulling the base to ground and completing the circuit.  All buttons and switches are connected to GPIO pulled up pins on the Arduino and complete the circuit to ground.  The WS2812 LED strip uses 5v power from the Arduino and a single data GPIO pin to control the individually addressable LEDs.
+
+<img width="1198" height="678" alt="image" src="https://github.com/user-attachments/assets/ff211c23-4eb7-4024-8486-9565b3ea921c" />
 
  # CAD Designs
+ All components of the game were designed in Autodesk Fusion 360.
+ 
 <img width="293" height="489" alt="image" src="https://github.com/user-attachments/assets/d421cab5-d959-4607-b82d-009cb31ec9aa" />
 <img width="309" height="491" alt="image" src="https://github.com/user-attachments/assets/1fe33fa7-5465-4f63-8d3d-09754b71baa6" />
 <img width="735" height="522" alt="image" src="https://github.com/user-attachments/assets/a4f3be4d-176a-4311-a6a9-f49854159f1b" />
@@ -87,10 +91,10 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 ## Shock Circuits
 - To build the shock circuit, disassemble a toy shock pin by unscrewing the tip and breaking the middle black portion from the silver top portion.
 - Using pliers for grip, pull the black tube out of the top.
-- There will be a blue capacitor, a very small circuit board with a white osscilator dot in the middle, three small batteries, and a spring.
+- There will be a blue capacitor, a very small circuit board with a white oscillator dot in the middle, three small batteries, and a spring.
 - Remove the blue capacitor by unbending the lower terminal wire.
-- Solder two terminals of the capcitor to the pads on the circuit board they were touching when in the pen.
-- Solder a wire to the other terminal of the capcitor.
+- Solder two terminals of the capacitor to the pads on the circuit board they were touching when in the pen.
+- Solder a wire to the other terminal of the capacitor.
 - Solder two wires to the other two pads on the other end of the circuit board.
 - If you apply 3-6 volts to those two wires and then touch the ground wire and the 3rd terminal of the capacitor you will receive a shock.
 - Reuse the batteries for some other project.
@@ -107,7 +111,7 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 <img width="1476" height="809" alt="image" src="https://github.com/user-attachments/assets/7dc9b833-abec-4484-82ee-39ea0d0571df" />
 
 - Round the outside corners of each and polish.
-- Cut the 4 conductor wire into 5 30" lengths.
+- Cut the 4-conductor wire into 5 30" lengths.
 - Assemble all the parts (including 3mm screws and washers)
 
 <img width="796" height="743" alt="image" src="https://github.com/user-attachments/assets/28510b57-99c4-4491-a770-e9337ebd69e2" />
@@ -118,10 +122,10 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
   - Thread the button into the top of the controller.
   - insert the wires from the bottom.  
   - Solder two wires (red and white) to the two button terminals.
-  - Using and m3 screw and washer, secure the other two wires to two electrode bars.
-  - Secure a zip-tie around the 4 conductor wire where it exits the hole in the bottom of the controller.
+  - Using and M3 screw and washer, secure the other two wires to two electrode bars.
+  - Secure a zip-tie around the 4-conductor wire where it exits the hole in the bottom of the controller.
   - Place the bars into the slots on the cover and slide the cover under the top of the controller.
-  - Secure the cover in place with one 3 screw.
+  - Secure the cover in place with one M3 screw.
 
 ## LEDs
 - Cut the WS2812 LED strip into 4 lengths of 4 LEDs.  Be sure to cut at designated cut lines on the strip.
@@ -139,7 +143,7 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 ## Knobs and Switches
 - Solder wires to the terminals of the 3 and 4 position switches.
 - Insert each rotary switch into the top, secure with the provided washer and nut, and attach a knob.
-- For the intesity control, the on-board potentiometer on the LM2596 DC-DC Buck Converter needs to be replaced with the 1k rotary potentiometer.
+- For the intensity control, the on-board potentiometer on the LM2596 DC-DC Buck Converter needs to be replaced with the 1k rotary potentiometer.
 - Using a soldering iron, remove the blue pot.
 - Solder wires to the 3 terminals of the 1k rotary pot and solder the other ends to the LM2596.
 - Insert the rotary pot into the top, secure with the provided washer and nut, and attach a knob.
