@@ -2,7 +2,7 @@
 #include <FastLED.h>
 
 #define NUM_LEDS 20
-#define LED_PIN 1
+#define LED_PIN A0
 #define TWINKLE_SPEED 6
 #define TWINKLE_DENSITY 6
 
@@ -14,13 +14,14 @@ int numberOfPlayers = 5;
 const int numberOfLEDSPerPlayer = 4;
 const int shockTime = 100; // SHOCK DURATION IN MS
 const int maxDelayBetweenResponses = 3000;
+const int debounceTime = 50;
 
-const int buttonStart = A0;
-const int modePins[3] = {10, 11, 12};
-const int numberOfPlayerPins[4] = {A2, A3, A4, A5};
-const int buttonPins[4] = {9, 8, 7, 6};
-const int shockPins[4] = {5, 4, 3, 2}; //SHOCK PINS ARE CONNECTED TO THE BASE OF A BC547 TRANSISTOR
-const int buzzer = A5; 
+const int buttonStart = 3;
+const int modePins[3] = {9, 10, 11};
+const int numberOfPlayersPin = 12;
+const int buttonPins[5] = {4, 5, 6, 7, 8};
+const int shockPins[5] = {A5, A4, A3, A2, A1}; //SHOCK PINS ARE CONNECTED TO THE BASE OF A BC547 TRANSISTOR
+const int buzzer = 13; 
 
 enum State {
   WAITING,
@@ -46,103 +47,16 @@ int sequenceDelay = 1500;
 int sequence[1000];
 int sequenceLength = 0;
 
-void setup() {
-  Serial.begin (9600);
-  randomSeed(analogRead(A1));
-  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
-  pinMode(buttonStart, INPUT_PULLUP);
-  pinMode(buzzer, OUTPUT);
-  for(int modePin = 0 ; modePin < sizeof(modePins); modePin++) {
-    pinMode(modePins[modePin], INPUT_PULLUP);
+void setPlayerNumberLEDs() {
+  FastLED.clear();
+  for(int player = 0; player < numberOfPlayers; player++) {
+    leds[player*numberOfLEDSPerPlayer] = CRGB::Green;
   }
-  for(int numberOfPlayersPin = 0 ; numberOfPlayersPin < sizeof(numberOfPlayerPins); numberOfPlayersPin++) {
-    pinMode(numberOfPlayerPins[numberOfPlayersPin], INPUT_PULLUP);
-  }
-  for(int buttonPin = 0 ; buttonPin < sizeof(buttonPins); buttonPin++) {
-    pinMode(buttonPins[buttonPin], INPUT_PULLUP);
-  }
-  for(int shockPin = 0 ; shockPin < sizeof(shockPins); shockPin++) {
-    pinMode(shockPins[shockPin], OUTPUT);
-  }
-  setAllPlayerLEDsToOneColor(CRGB::Black);
-}
-
-void loop() {
-  Serial.println ("Stand-by waiting for start button...");
-  if(settingsChanged()) {
-    reset();
-  }
-
-  while (digitalRead(buttonStart) == HIGH) {
-    if(currentMode == MEMORY) {
-      drawTwinkles(leds);
-    }
-    if(currentMode == REACTION) {
-      sequentialLEDsForAllPlayers(CRGB::Blue);
-    }
-  }
-
-  currentState = PLAYING;
-
-  if(currentMode == TEST) {
-    waitForTestButton();
-    reset();
-  }
-
-  if(currentMode == REACTION) {
-    Serial.println ("Starting reaction game countdown...");
-    FastLED.clear(true);
-    for (int i = 20; i < 255; i++) { // GAME START BUZZER SOUND
-      tone(buzzer, i * 7);
-      //setAllLEDs(i);
-      sequentialLEDsForAllPlayers(CRGB::Green);
-      delay(15);
-    }
-    noTone(buzzer);
-    FastLED.clear(true);
-
-    delay(random(2000, 10000));  //WAIT RANDOM 2 - 10 SEC
-
-    Serial.println ("Checking for cheaters...");
-    checkCheater(); //CHECK IF CHEATER IS HOLDING A BUTTON EARLY AND PUNISH HIM/HER
-      if(currentState == PLAYING) {
-      Serial.println ("Game start!");
-      startTime = millis();
-      setAllPlayerLEDsToOneColor(CRGB::White);
-      tone(buzzer, 2500);
-    
-      waitForReactions();
-
-      Serial.print("Total buttons pressed: ");
-      Serial.println(pressedTotal);
-
-      for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
-        Serial.print("Player ");
-        Serial.print(playerNum + 1);
-        Serial.print(" pressed? - ");
-        Serial.println(pressed[playerNum]);
-      }
-      
-      shockingTime();
-
-      delay(5000);
-    }
-  }
-
-  if(currentMode == MEMORY) {
-    Serial.println ("Starting memory game...");
-    playSequence();
-    addItemToSequence();
-    waitForSequenceRepeat();
-  }
-
-  if(currentState == FINISHING) {
-    reset();
-  }
+  FastLED.show();
 }
 
 void reset() {
-  Serial.println ("Resetting.");
+  Serial.println (F("Resetting."));
   FastLED.clear(true);
   currentState = WAITING;
   for(int player = 0; player < numberOfPlayers; player++) {
@@ -150,16 +64,18 @@ void reset() {
   }
   pressedTotal = 0;
   sequenceLength = 0;
+  setPlayerNumberLEDs();
+  delay(1000);
 }
 
 bool settingsChanged() {
   bool changed = false;
-  for(int pin = 0; pin < sizeof(numberOfPlayerPins); pin++) {
-    if(digitalRead(numberOfPlayerPins[pin]) == LOW) {
-      if(pin+2 != numberOfPlayers) {
-        changed = true;
-        numberOfPlayers = pin+2; // knob pin 0 = 2 players
-      }
+  if(digitalRead(numberOfPlayersPin) == LOW) {
+    changed = true;
+    numberOfPlayers++;
+    if(numberOfPlayers < 5) {
+      numberOfPlayers = 2;
+      delay(50); // to prevent bounce
     }
   }
   for(int pin = 0; pin < sizeof(modePins); pin++) {
@@ -174,15 +90,23 @@ bool settingsChanged() {
 }
 
 void waitForTestButton() {
-  Serial.println("waiting for a button test press...");
+  Serial.println(F("waiting for a button test press..."));
+  int lastButtonPress = millis() - debounceTime - 1;
   while (pressedTotal == 0) {
     for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
       if (digitalRead(buttonPins[playerNum]) == LOW) {
-        pressedTotal = 1;
-        Serial.print("Button ");
-        Serial.print(playerNum + 1);
-        Serial.println(" was pressed.");
-        shockPlayer(playerNum);
+         if(millis() - lastButtonPress > debounceTime) {
+          lastButtonPress = millis();
+          pressedTotal = 1;
+          Serial.print(F("Button "));
+          Serial.print(playerNum + 1);
+          Serial.println(F(" was pressed."));
+          shockPlayer(playerNum);
+         }
+        else {
+          Serial.print(F("ignoring fast click (debounce) from player "));
+          Serial.println(playerNum);
+        }
       }
     }
   }
@@ -195,20 +119,23 @@ void playSequenceItem(int player) {
 }
 
 void playSequence() {
-  Serial.print("playing memory sequence of length ");
+  Serial.print(F("playing memory sequence of length "));
   Serial.println(sequenceLength);
   FastLED.clear(true);
   for(int seq = 0; seq < sequenceLength; seq++) {
     playSequenceItem(seq);
+    if(settingsChanged()) {
+      reset();
+    }
   }
 }
 
 void addItemToSequence() {
   FastLED.clear(true);
   int nextPlayerInSequence = random(numberOfPlayers);
-  Serial.print("player ");
+  Serial.print(F("player "));
   Serial.print(nextPlayerInSequence);
-  Serial.println(" is next in the sequence");
+  Serial.println(F(" is next in the sequence"));
   sequence[sequenceLength] = nextPlayerInSequence;
   sequenceLength++;
   playSequenceItem(nextPlayerInSequence);
@@ -217,31 +144,41 @@ void addItemToSequence() {
 
 void waitForSequenceRepeat() {
   int sequenceNumber = 0;
-  int lastButtonPress = millis();
-  Serial.println("waiting for sequence to be repeated...");
+  int lastButtonPress = millis() - debounceTime - 1;
+  Serial.println(F("waiting for sequence to be repeated..."));
 
   while(currentState == PLAYING && sequenceNumber <= sequenceLength) {
     for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
+      if(settingsChanged()) {
+        reset();
+      }
+
       if(digitalRead(buttonPins[playerNum]) == LOW) {
-        if(playerNum == sequence[sequenceNumber]) {
-          playSequenceItem(playerNum);
-          sequenceNumber++;
+        if(millis() - lastButtonPress > debounceTime) {            
+          if(playerNum == sequence[sequenceNumber]) {
+            playSequenceItem(playerNum);
+            sequenceNumber++;
+          }
+          else {
+            Serial.print(F("player "));
+            Serial.print(playerNum);
+            Serial.print(F(" pressed their button when we were expecting player "));
+            Serial.println(sequence[sequenceNumber]);
+            shockPlayer(playerNum);
+            currentState = FINISHING;
+          }
         }
         else {
-          Serial.print("player ");
-          Serial.print(playerNum);
-          Serial.print(" pressed their button when we were expecting player ");
-          Serial.println(sequence[sequenceNumber]);
-          shockPlayer(playerNum);
-          currentState = FINISHING;
+          Serial.print(F("ignoring fast click (debounce) from player "));
+          Serial.println(playerNum);
         }
       }
     }
 
     if(millis() - lastButtonPress > maxDelayBetweenResponses) {
-      Serial.print("player ");
+      Serial.print(F("player "));
       Serial.print(sequence[sequenceNumber]);
-      Serial.println(" failed to press their button in time ");
+      Serial.println(F(" failed to press their button in time "));
       shockPlayer(sequence[sequenceNumber]);
       currentState = FINISHING;
     }
@@ -268,11 +205,11 @@ void waitForReactions() {
           pressed[playerNum] = 1;
           pressedTotal = pressedTotal + 1;
           setPlayerLEDPosition(playerNum, pressedTotal-1);
-          Serial.print("Button ");
+          Serial.print(F("Button "));
           Serial.print(playerNum + 1);
-          Serial.print(" was pressed in ");
+          Serial.print(F(" was pressed in "));
           Serial.print(millis() - startTime);
-          Serial.println(" millseconds");
+          Serial.println(F(" millseconds"));
         }
       }
     }
@@ -280,9 +217,9 @@ void waitForReactions() {
     if(millis() - startTime > maxDelayBetweenResponses) {
       for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
         if(pressed[playerNum] == 0) {
-          Serial.print("player ");
+          Serial.print(F("player "));
           Serial.print(playerNum);
-          Serial.println(" failed to press their button in time ");
+          Serial.println(F(" failed to press their button in time "));
         }
       }
       currentState = FINISHING;
@@ -305,9 +242,9 @@ void shockingTime() {
 void shockCheater(int playerNum) {
   int shockPin = shockPins[playerNum];
 
-  Serial.print("Player ");
+  Serial.print(F("Player "));
   Serial.print(playerNum + 1);
-  Serial.println(" cheated.");
+  Serial.println(F(" cheated."));
 
   noTone(buzzer);
   setAllPlayerLEDsToOneColor(CRGB::Red);
@@ -324,7 +261,7 @@ void shockCheater(int playerNum) {
 void shockPlayer(int playerNum) {
   int shockPin = shockPins[playerNum];
 
-  Serial.print("Shocking player ");
+  Serial.print(F("Shocking player "));
   Serial.println(playerNum + 1);
 
   noTone(buzzer);  
@@ -335,18 +272,10 @@ void shockPlayer(int playerNum) {
   flashPlayerLEDsWithOneColor(playerNum, CRGB::Red);
 }
 
-void setPlayerNumberLEDs() {
-  FastLED.clear();
-  for(int player = 0; player < numberOfPlayers; player++) {
-    leds[player*numberOfLEDSPerPlayer] = CRGB::Green;
-  }
-  FastLED.show();
-}
-
 void setPlayerLEDPosition(int player, int position) {
   for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
     if(led <= position) {
-      leds[player*numberOfLEDSPerPlayer+led] = CRGB::White;
+      leds[player*numberOfLEDSPerPlayer+led] = CRGB::Blue;
     }
     else {
       leds[player*numberOfLEDSPerPlayer+led] = CRGB::Black;
@@ -357,7 +286,6 @@ void setPlayerLEDPosition(int player, int position) {
 
 void setPlayerLEDsToOneColor(int player, CRGB color) {
   for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
-    Serial.println(player*numberOfLEDSPerPlayer+led);
     leds[player*numberOfLEDSPerPlayer+led] = color;
   }
   FastLED.show();
@@ -377,14 +305,14 @@ void flashPlayerLEDsWithOneColor(int player, CRGB color) {
 void setAllPlayerLEDsToOneColor(CRGB color) {
   for(int player = 0; player < numberOfPlayers; player++) {
     for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
-    Serial.println(player*numberOfLEDSPerPlayer+led);
       leds[player*numberOfLEDSPerPlayer+led] = color;
     }
   }
   FastLED.show();
 }
 
-void sequentialLEDsForAllPlayers(CRGB color) {
+
+void sequentialLEDsForOnePlayer(int player, CRGB color) {
   int nextLED = 3;
   if(leds[3] != CRGB::Black) {
     nextLED = 0;
@@ -398,10 +326,14 @@ void sequentialLEDsForAllPlayers(CRGB color) {
   if(nextLED == 0) {
     FastLED.clear(true);
   }
+  for(int led = 0; led < nextLED+1; led++) {
+    leds[player*numberOfLEDSPerPlayer+led] = color;
+  }
+}
+
+void sequentialLEDsForAllPlayers(CRGB color) {
   for(int player = 0; player < numberOfPlayers; player++) {
-    for(int led = 0; led < nextLED+1; led++) {
-      leds[player*numberOfLEDSPerPlayer+led] = color;
-    }
+    sequentialLEDsForOnePlayer(player, color);
   }
   FastLED.show();
 }
@@ -484,3 +416,102 @@ uint8_t attackDecayWave8( uint8_t i) {
 
 
 
+void setup() {
+  Serial.begin (9600);
+  randomSeed(analogRead(A1));
+  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
+  pinMode(buttonStart, INPUT_PULLUP);
+  pinMode(buzzer, OUTPUT);
+  for(int modePin = 0 ; modePin < sizeof(modePins); modePin++) {
+    pinMode(modePins[modePin], INPUT_PULLUP);
+  }
+  pinMode(numberOfPlayersPin, INPUT_PULLUP);
+  for(int buttonPin = 0 ; buttonPin < sizeof(buttonPins); buttonPin++) {
+    pinMode(buttonPins[buttonPin], INPUT_PULLUP);
+  }
+  for(int shockPin = 0 ; shockPin < sizeof(shockPins); shockPin++) {
+    pinMode(shockPins[shockPin], OUTPUT);
+  }
+  setAllPlayerLEDsToOneColor(CRGB::Black);
+  Serial.println(F("Setup complete"));
+}
+
+void loop() {
+  Serial.println (F("Stand-by waiting for start button..."));
+  Serial.println(currentMode);
+
+  Serial.println(REACTION);
+
+  drawTwinkles(leds);
+
+  if(settingsChanged()) {
+    reset();
+  }
+
+  while (digitalRead(buttonStart) == HIGH) {
+    if(currentMode == MEMORY) {
+      drawTwinkles(leds);
+    }
+    if(currentMode == REACTION) {
+      sequentialLEDsForAllPlayers(CRGB::Blue);
+    }
+  }
+
+  currentState = PLAYING;
+
+  if(currentMode == TEST) {
+    waitForTestButton();
+    reset();
+  }
+
+  if(currentMode == REACTION) {
+    Serial.println (F("Starting reaction game countdown..."));
+    FastLED.clear(true);
+    for (int i = 20; i < 255; i++) { // GAME START BUZZER SOUND
+      tone(buzzer, i * 7);
+      //setAllLEDs(i);
+      sequentialLEDsForAllPlayers(CRGB::Green);
+      delay(15);
+    }
+    noTone(buzzer);
+    FastLED.clear(true);
+
+    delay(random(2000, 10000));  //WAIT RANDOM 2 - 10 SEC
+
+    Serial.println (F("Checking for cheaters..."));
+    checkCheater(); //CHECK IF CHEATER IS HOLDING A BUTTON EARLY AND PUNISH HIM/HER
+    if(currentState == PLAYING) {
+      Serial.println (F("Game start!"));
+      startTime = millis();
+      setAllPlayerLEDsToOneColor(CRGB::White);
+      tone(buzzer, 2500);
+    
+      waitForReactions();
+
+      Serial.print(F("Total buttons pressed: "));
+      Serial.println(pressedTotal);
+
+      for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
+        Serial.print(F("Player "));
+        Serial.print(playerNum + 1);
+        Serial.print(F(" pressed? - "));
+        Serial.println(pressed[playerNum]);
+      }
+      
+      shockingTime();
+
+      delay(5000);
+    }
+  }
+
+  if(currentMode == MEMORY) {
+    Serial.println (F("Starting memory game..."));
+    playSequence();
+    addItemToSequence();
+    waitForSequenceRepeat();
+  }
+
+  if(currentState == FINISHING) {
+    reset();
+  }
+}
