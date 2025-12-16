@@ -103,6 +103,8 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - Using a hot glue gun, glue the strips into the top of the game so that the LEDs align with the holes.
 - Cover each strip with tape.
 
+<img width="1040" height="841" alt="image" src="https://github.com/user-attachments/assets/77cb0e32-aae0-41e4-907b-70030ffdeb6f" />
+
 ## Start Button
 - CA glue the 12mm button switch to the start button mount panel with the pins sticking through the holes.
 - Solder wires to two pins on one side of the switch.
@@ -124,7 +126,8 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - Thread each controller wire into the holes on the side of the top unit.
 - Connect the switches, controllers, etc. according to the diagram above.
 
-
+## Programming
+- Download the code in the code folder to the Arduino
 
 
 
