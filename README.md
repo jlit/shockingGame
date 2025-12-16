@@ -91,13 +91,13 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - Cut the wires from the buttons and remove any remaining heat shrink.
 - Strip 90mm of the outside cover from one end of each wire and strip and tin the ends of each conductor.  
 - For each controller,
-- - Thread the button into the top of the controller.
-- - insert the wires from the bottom.  
-- - Solder two wires (red and white) to the two button terminals.
-- - Using and m3 screw and washer, secure the other two wires to two electrode bars.
-- - Secure a zip-tie around the 4 conductor wire where it exits the hole in the bottom of the controller.
-- - Place the bars into the slots on the cover and slide the cover under the top of the controller.
-- - Secure the cover in place with one 3 screw.
+  - Thread the button into the top of the controller.
+  - insert the wires from the bottom.  
+  - Solder two wires (red and white) to the two button terminals.
+  - Using and m3 screw and washer, secure the other two wires to two electrode bars.
+  - Secure a zip-tie around the 4 conductor wire where it exits the hole in the bottom of the controller.
+  - Place the bars into the slots on the cover and slide the cover under the top of the controller.
+  - Secure the cover in place with one 3 screw.
 
 ## LEDs
 - Cut the WS2812 LED strip into 4 lengths of 4 LEDs.  Be sure to cut at designated cut lines on the strip.
