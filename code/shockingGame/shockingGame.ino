@@ -11,7 +11,7 @@ CRGBPalette16 gCurrentPalette = *&RainbowColors_p;
 CRGB gBackgroundColor = CRGB::Black;
 
 int numberOfPlayers = 5;
-const int numberOfLEDSPerPlayer = 4;
+const int numberOfLEDsPerPlayer = 4;
 const int shockTime = 100; // SHOCK DURATION IN MS
 const int maxDelayBetweenResponses = 3000;
 const int debounceTime = 50;
@@ -32,7 +32,7 @@ State currentState = WAITING;
 
 enum Mode {
   REACTION,
-  TEST,
+  ROULETTE,
   MEMORY
 };
 Mode currentMode = REACTION;
@@ -50,7 +50,12 @@ int sequenceLength = 0;
 void setPlayerNumberLEDs() {
   FastLED.clear();
   for(int player = 0; player < numberOfPlayers; player++) {
-    leds[player*numberOfLEDSPerPlayer] = CRGB::Green;
+    if(player % 2 != 0) {
+      leds[player*numberOfLEDsPerPlayer+3] = CRGB::Green;
+    }
+    else {
+      leds[player*numberOfLEDsPerPlayer] = CRGB::Green;
+    }
   }
   FastLED.show();
 }
@@ -73,39 +78,44 @@ bool settingsChanged() {
   if(digitalRead(numberOfPlayersPin) == LOW) {
     changed = true;
     numberOfPlayers++;
-    if(numberOfPlayers < 5) {
+    if(numberOfPlayers > 5) {
       numberOfPlayers = 2;
-      delay(50); // to prevent bounce
     }
+    Serial.print(F("number of players changed to "));
+    Serial.println(numberOfPlayers);
+    delay(50); // to prevent bounce
   }
-  for(int pin = 0; pin < sizeof(modePins); pin++) {
+  for(int pin = 0; pin < 3; pin++) {
     if(digitalRead(modePins[pin]) == LOW) {
-      if(pin != currentMode) {
+      if(pin != static_cast<int>(currentMode)) {
         changed = true;
-        currentMode = static_cast<Mode>(pin); // 0 = Reaction, 1 = Test, 2 = Memory
+        Serial.print(F("game mode changed to "));
+        Serial.println(pin);
+        currentMode = static_cast<Mode>(pin); // 0 = Reaction, 1 = Roulette, 2 = Memory
       }
     }
   }
   return changed;
 }
 
-void waitForTestButton() {
-  Serial.println(F("waiting for a button test press..."));
-  int lastButtonPress = millis() - debounceTime - 1;
+void waitForRouletteButton() {
+  Serial.println(F("waiting for a roulette button press..."));
+  int targetPlayer = random(0, numberOfPlayers+1);
+  Serial.print(F("target player is "));
+  Serial.println(targetPlayer);
   while (pressedTotal == 0) {
     for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
       if (digitalRead(buttonPins[playerNum]) == LOW) {
-         if(millis() - lastButtonPress > debounceTime) {
-          lastButtonPress = millis();
-          pressedTotal = 1;
-          Serial.print(F("Button "));
-          Serial.print(playerNum + 1);
-          Serial.println(F(" was pressed."));
+        pressedTotal = 1;
+        Serial.print(F("Button "));
+        Serial.print(playerNum);
+        Serial.println(F(" was pressed."));
+        if(playerNum == targetPlayer) {
           shockPlayer(playerNum);
-         }
+        }
         else {
-          Serial.print(F("ignoring fast click (debounce) from player "));
-          Serial.println(playerNum);
+          setPlayerLEDsToOneColor(playerNum, CRGB::Green);
+          tone(buzzer, 700, 250);
         }
       }
     }
@@ -144,15 +154,11 @@ void addItemToSequence() {
 
 void waitForSequenceRepeat() {
   int sequenceNumber = 0;
-  int lastButtonPress = millis() - debounceTime - 1;
+  int lastButtonPress = 0;
   Serial.println(F("waiting for sequence to be repeated..."));
 
   while(currentState == PLAYING && sequenceNumber <= sequenceLength) {
     for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
-      if(settingsChanged()) {
-        reset();
-      }
-
       if(digitalRead(buttonPins[playerNum]) == LOW) {
         if(millis() - lastButtonPress > debounceTime) {            
           if(playerNum == sequence[sequenceNumber]) {
@@ -172,7 +178,11 @@ void waitForSequenceRepeat() {
           Serial.print(F("ignoring fast click (debounce) from player "));
           Serial.println(playerNum);
         }
+        lastButtonPress = millis();
       }
+      // if(settingsChanged()) {
+      //   reset();
+      // }
     }
 
     if(millis() - lastButtonPress > maxDelayBetweenResponses) {
@@ -206,7 +216,7 @@ void waitForReactions() {
           pressedTotal = pressedTotal + 1;
           setPlayerLEDPosition(playerNum, pressedTotal-1);
           Serial.print(F("Button "));
-          Serial.print(playerNum + 1);
+          Serial.print(playerNum);
           Serial.print(F(" was pressed in "));
           Serial.print(millis() - startTime);
           Serial.println(F(" millseconds"));
@@ -233,8 +243,27 @@ void waitForReactions() {
 
 void shockingTime() {
   for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
+    // Shock any player who deserves it (might be many if they all failed to press their button)
     if (pressed[playerNum] == 0) {
-      shockPlayer(playerNum);
+      int shockPin = shockPins[playerNum];
+
+      Serial.print(F("Shocking player "));
+      Serial.println(playerNum);
+
+      noTone(buzzer);  
+      digitalWrite (shockPin, HIGH);
+
+      flashPlayerLEDsWithOneColor(playerNum, CRGB::Red);
+    }
+  }
+
+  delay(shockTime); // Wait for all
+
+  // Turn them all off
+  for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
+    if (pressed[playerNum] == 0) {
+      int shockPin = shockPins[playerNum]; 
+      digitalWrite (shockPin, LOW);
     }
   }
 }
@@ -243,7 +272,7 @@ void shockCheater(int playerNum) {
   int shockPin = shockPins[playerNum];
 
   Serial.print(F("Player "));
-  Serial.print(playerNum + 1);
+  Serial.print(playerNum);
   Serial.println(F(" cheated."));
 
   noTone(buzzer);
@@ -262,7 +291,7 @@ void shockPlayer(int playerNum) {
   int shockPin = shockPins[playerNum];
 
   Serial.print(F("Shocking player "));
-  Serial.println(playerNum + 1);
+  Serial.println(playerNum);
 
   noTone(buzzer);  
   digitalWrite (shockPin, HIGH);
@@ -273,20 +302,25 @@ void shockPlayer(int playerNum) {
 }
 
 void setPlayerLEDPosition(int player, int position) {
-  for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
+  for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
     if(led <= position) {
-      leds[player*numberOfLEDSPerPlayer+led] = CRGB::Blue;
+      if(player % 2 != 0) {
+        leds[player*numberOfLEDsPerPlayer+3-led] = CRGB::Blue;
+      }
+      else {
+        leds[player*numberOfLEDsPerPlayer+led] = CRGB::Blue;
+      }
     }
     else {
-      leds[player*numberOfLEDSPerPlayer+led] = CRGB::Black;
+      leds[player*numberOfLEDsPerPlayer+led] = CRGB::Black;
     }
   }
   FastLED.show();
 }
 
 void setPlayerLEDsToOneColor(int player, CRGB color) {
-  for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
-    leds[player*numberOfLEDSPerPlayer+led] = color;
+  for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
+    leds[player*numberOfLEDsPerPlayer+led] = color;
   }
   FastLED.show();
 }
@@ -304,8 +338,8 @@ void flashPlayerLEDsWithOneColor(int player, CRGB color) {
 
 void setAllPlayerLEDsToOneColor(CRGB color) {
   for(int player = 0; player < numberOfPlayers; player++) {
-    for(int led = 0; led < numberOfLEDSPerPlayer; led++) {
-      leds[player*numberOfLEDSPerPlayer+led] = color;
+    for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
+      leds[player*numberOfLEDsPerPlayer+led] = color;
     }
   }
   FastLED.show();
@@ -324,10 +358,17 @@ void sequentialLEDsForOnePlayer(int player, CRGB color) {
     nextLED = 2;
   }
   if(nextLED == 0) {
-    FastLED.clear(true);
+    for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
+      leds[player*numberOfLEDsPerPlayer] = CRGB::Black;
+    }
   }
   for(int led = 0; led < nextLED+1; led++) {
-    leds[player*numberOfLEDSPerPlayer+led] = color;
+    if(player % 2 != 0) {
+      leds[player*numberOfLEDsPerPlayer+3-led] = color;
+    }
+    else {
+      leds[player*numberOfLEDsPerPlayer+led] = color;
+    }
   }
 }
 
@@ -336,6 +377,7 @@ void sequentialLEDsForAllPlayers(CRGB color) {
     sequentialLEDsForOnePlayer(player, color);
   }
   FastLED.show();
+  delay(150);
 }
 
 //  This function loops over each pixel, calculates the adjusted 'clock' that this pixel should use, and calls 
@@ -438,11 +480,6 @@ void setup() {
 
 void loop() {
   Serial.println (F("Stand-by waiting for start button..."));
-  Serial.println(currentMode);
-
-  Serial.println(REACTION);
-
-  drawTwinkles(leds);
 
   if(settingsChanged()) {
     reset();
@@ -455,12 +492,20 @@ void loop() {
     if(currentMode == REACTION) {
       sequentialLEDsForAllPlayers(CRGB::Blue);
     }
+    if(currentMode == ROULETTE) {      
+      sequentialLEDsForAllPlayers(CRGB::Green);
+    }
+    if(settingsChanged()) {
+      reset();
+    }
   }
 
   currentState = PLAYING;
 
-  if(currentMode == TEST) {
-    waitForTestButton();
+  if(currentMode == ROULETTE) {
+    Serial.println (F("Starting Russian roulette mode..."));
+    setAllPlayerLEDsToOneColor(CRGB::White);
+    waitForRouletteButton();
     reset();
   }
 
@@ -493,7 +538,7 @@ void loop() {
 
       for(int playerNum = 0; playerNum < numberOfPlayers; playerNum++) {
         Serial.print(F("Player "));
-        Serial.print(playerNum + 1);
+        Serial.print(playerNum);
         Serial.print(F(" pressed? - "));
         Serial.println(pressed[playerNum]);
       }
@@ -506,6 +551,9 @@ void loop() {
 
   if(currentMode == MEMORY) {
     Serial.println (F("Starting memory game..."));
+    setAllPlayerLEDsToOneColor(CRGB::Blue);
+    delay(1000);
+    FastLED.clear(true);
     playSequence();
     addItemToSequence();
     waitForSequenceRepeat();
