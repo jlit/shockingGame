@@ -8,8 +8,8 @@ This improved version supports 2-5 players and adds a second "memory" game optio
 
 # Features
 - Reaction Time game mode
+- Russian Roulette game mode
 - Memory Sequence game mode
-- "Test" game mode
 - Up to 5 players
 - Variable intensity adjustment knob to control shock
 - Digital intensity display
@@ -26,19 +26,19 @@ The game has cheat detection.  Any player who has their button depressed when th
 
 After 5 seconds, the game will again display LED animation and wait for the next press of the Start button for another round.
 
+## Russian Roulette Mode
+Turn the game mode knob to Roulette (in between Reaction and Memory) and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
+
+In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otehrwise their LEDs will turn green.
+
+After 5 seconds, the game will again display LED animation and wait for the next button press with a new random target player.
+
 ## Memory Mode
 Turn the game mode knob to Memory and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
 Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate, and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
 
 Five seconds after a mistake, the game will again display LED animation and wait for the net press of the Start button for another round.
-
-## Test Mode
-Turn the game mode knob to Test (in between Reaction and Memory) and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
-
-In this mode, an animation is displayed and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red.
-
-After 5 seconds, the game will again display LED animation and wait for the next button press.
 
 # Build
 The game uses an Arduino micro-controller to handle the logic.  The shock circuits are harvested from toy shock pens and use a flyback transformer and oscillator operating at between 2.5-6 volts.  The controllers house a momentary button and two polished aluminum electrodes along the sides.  The base houses the control knobs, voltage display, LEDs, and center start button.  Most of the parts are 3D printed in PLA.
