@@ -35,7 +35,7 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3?ref=ppx_yo2ov_dt_b_fed_asin_title)
 - [2N2222 NPN Tranistor](https://en.wikipedia.org/wiki/2N2222) (Quantity 5)
 - [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
-- [220 Ohm Resistor][https://www.amazon.com/dp/B07QK9ZBVZ] (Quantity 5)
+- [220 Ohm Resistor](https://www.amazon.com/dp/B07QK9ZBVZ) (Quantity 5)
 - Wire, solder, PLA filament, zip ties, screws, etc.
 
 # Electrical Circuit
