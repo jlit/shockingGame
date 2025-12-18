@@ -1,15 +1,15 @@
-# shockingGame
-A reaction time and memory game with consequences
+# R3 - A Shocking Game
+A reaction, roulette, and recall game with consequences
 
 # Description
 This is an improvement over the ["Lightning Reaction Reloaded - Shocking Game"](https://www.amazon.com/dp/B0006B2Q50?ref=ppx_yo2ov_dt_b_fed_asin_title) available for $40 online.  In that game, players press the button on their controller when the game's random delay indicates.  The last player to respond gets an electric shock.  The game supports 2-4 players.
 
-This improved version supports 2-5 players and adds a second "memory" game option, similar to the old [Simon Game](https://en.wikipedia.org/wiki/Simon_(game)) from the 1970s.  In this mode, players must repeat an ever longer sequence.  This first player to mess up the sequence is shocked.
+This improved version supports 2-5 players and adds two new game modes: "Roulette" amd "Recall".  Roulette is a verison of Russian Roulette and Recall similar to the old [Simon Game](https://en.wikipedia.org/wiki/Simon_(game)) from the 1970s.  In this mode, players must repeat an ever longer sequence.  This first player to mess up the sequence is shocked.
 
 # Features
 - Reaction Time game mode
 - Russian Roulette game mode
-- Memory Sequence game mode
+- Recall Sequence game mode
 - Up to 5 players
 - Variable intensity adjustment knob to control shock
 - Digital intensity display
@@ -18,7 +18,7 @@ This improved version supports 2-5 players and adds a second "memory" game optio
 
 # Play
 ## Reaction Mode
-Turn the game mode knob to Reaction and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  The digital display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6 volts is the maximum and hurts.
+Turn the game mode knob to Reaction and press the Number of Players button until the desired number (2-5) of player LEDs illuminate.  An LED animation (green sequence of lights for each active player) will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  The digital display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6 volts is the maximum and hurts.
 
 Press the Start button (big white button in center) to start a round of play.  A sound and animation will play, followed by a random length of quiet time (2-10 seconds) and then all the LEDs will turn white and a beep will sound.  Each player should press the button on the their controller as soon as they sense the lights and sound.  The LEDs will illuminate to indicate the order the buttons were pressed.  The player with the fastest reaction time will show 1 blue LED, the seconds fastest 2 blue LEDs, etc. until the last player.  That player will show 4 blinking red LEDs and will have received a 100 ms shock.
 
@@ -27,16 +27,16 @@ The game has cheat detection.  Any player who has their button depressed when th
 After 5 seconds, the game will again display LED animation and wait for the next press of the Start button for another round.
 
 ## Russian Roulette Mode
-Turn the game mode knob to Roulette (in between Reaction and Memory) and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
+Turn the game mode knob to Roulette and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs blue, one at a time, rotating around) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
-In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otehrwise their LEDs will turn green.
+Press the Start button (big white button in center) to start a round of play.  In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otehrwise their LEDs will turn green.
 
 After 5 seconds, the game will again display LED animation and wait for the next button press with a new random target player.
 
-## Memory Mode
-Turn the game mode knob to Memory and turn the Number of Players knob to the desired number of players (2-5).  An LED animation will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
+## Recall Mode
+Turn the game mode knob to Recall and select the desired number of players (2-5).  An LED animation will illuminate (random colored twinkles) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
-Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate, and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
+Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate in a color specific to that player, and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
 
 Five seconds after a mistake, the game will again display LED animation and wait for the net press of the Start button for another round.
 
@@ -48,13 +48,12 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - [Battery Holder (8 AA)](https://www.amazon.com/dp/B07WP1CYYW)
 - [Mini ON and Off Rocker Switch 12V 20A T85 2 Pin SPST](https://www.amazon.com/dp/B07S2QJKTX)
 - [Momentary Tactile Push Button, 12 x 12 mm x 4.3 mm](https://www.amazon.com/TWTADE-Momentary-Tactile-Button-Switch/dp/B07CG6HVY9)
-- [1 Pole 4 Position Rotary Switch (for number of players)](https://www.amazon.com/dp/B07JLRM2L7)
 - [1 Pole 3 Position Rotary Switch (for game mode)](https://www.amazon.com/dp/B07JLVV478e)
 - [1K Linear Rotary Potentiometer (for intensity)](https://www.amazon.com/dp/B082FCFSHX)
 - [LM2596 DC-DC Buck Converter Step Down Module Power Supply](https://www.amazon.com/Zixtec-LM2596-Converter-Module-1-25V-30V/dp/B07VVXF7YX)
 - [3 Wire 0.36" DC 0~30V Digital Voltmeter Digital Red LED Display](https://www.amazon.com/dp/B079N98PY4)
 - [WS2812B IC RGB Individual Addressable LED Strip Light](https://www.amazon.com/LOAMLIN-WS2812B-Individually-Addressable-Waterproof/dp/B0956C7KFR)
-- [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
+- [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 6)
 - [Aluminum Flat Plate Bar Stock 3 x 10 x 305mm T6511](https://www.amazon.com/dp/B0CZ4F77TL)
 - [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3?ref=ppx_yo2ov_dt_b_fed_asin_title)
 - [2N2222 NPN Transistor](https://en.wikipedia.org/wiki/2N2222) (Quantity 5)
@@ -141,12 +140,13 @@ The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC 
 - Place the start button into the top, cover, and attach the switch cover to the top with 5 screws.
 
 ## Knobs and Switches
-- Solder wires to the terminals of the 3 and 4 position switches.
-- Insert each rotary switch into the top, secure with the provided washer and nut, and attach a knob.
+- Solder wires to the terminals of the 3 position rotary game mode switch.
+- Insert rotary switch into the top, place the label, secure with the provided washer and nut, and attach a knob.
+- For the number of players button, insert the button into the top, place the label, secure with the provided nut from below.
 - For the intensity control, the on-board potentiometer on the LM2596 DC-DC Buck Converter needs to be replaced with the 1k rotary potentiometer.
 - Using a soldering iron, remove the blue pot.
 - Solder wires to the 3 terminals of the 1k rotary pot and solder the other ends to the LM2596.
-- Insert the rotary pot into the top, secure with the provided washer and nut, and attach a knob.
+- Insert the rotary pot into the top, place the label, secure with the provided washer and nut, and attach a knob.
 - Insert the digital voltage display into the top and secure with 2 m2 screws.
 - Insert the power toggle switch into the side of the top unit.
 
