@@ -1,5 +1,6 @@
 #include <math.h>
 #include <FastLED.h>
+#include "pitches.h"
 
 #define NUM_LEDS 20
 #define LED_PIN A0
@@ -9,6 +10,7 @@
 CRGBArray<NUM_LEDS> leds;
 CRGBPalette16 gCurrentPalette = *&RainbowColors_p;
 CRGB gBackgroundColor = CRGB::Black;
+int LEDSequenceNumber = -1;
 
 int numberOfPlayers = 5;
 const int numberOfLEDsPerPlayer = 4;
@@ -35,7 +37,7 @@ enum Mode {
   ROULETTE,
   MEMORY
 };
-Mode currentMode = REACTION;
+Mode currentMode = MEMORY;
 
 // Reaction mode settings
 int pressed[4] = {0, 0, 0, 0};
@@ -50,12 +52,7 @@ int sequenceLength = 0;
 void setPlayerNumberLEDs() {
   FastLED.clear();
   for(int player = 0; player < numberOfPlayers; player++) {
-    if(player % 2 != 0) {
-      leds[player*numberOfLEDsPerPlayer+3] = CRGB::Green;
-    }
-    else {
-      leds[player*numberOfLEDsPerPlayer] = CRGB::Green;
-    }
+    leds[player*numberOfLEDsPerPlayer] = CRGB::Green;
   }
   FastLED.show();
 }
@@ -69,6 +66,7 @@ void reset() {
   }
   pressedTotal = 0;
   sequenceLength = 0;
+  LEDSequenceNumber = -1;
   setPlayerNumberLEDs();
   delay(1000);
 }
@@ -98,6 +96,57 @@ bool settingsChanged() {
   return changed;
 }
 
+void playBoom() {
+  tone(buzzer, 31, 1500);
+}
+
+void playFail() {
+  tone(buzzer, 392);
+  delay(450);
+  tone(buzzer, 262);
+  delay(900);
+  noTone(buzzer);
+}
+
+void playSuccess() {
+  const uint8_t NOTE_SUSTAIN = 50; 
+  for(uint8_t nLoop = 0; nLoop < 2; nLoop ++) {
+    tone(buzzer,NOTE_A5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_B5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_C5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_B5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_C5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_D5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_C5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_D5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_E5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_D5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_E5);
+    delay(NOTE_SUSTAIN);
+    tone(buzzer,NOTE_E5);
+    delay(NOTE_SUSTAIN);
+  }
+  noTone(buzzer);
+}
+
+void playShortBeep() {
+  tone(buzzer, 700, 250);
+}
+
+void playLongBeep() {
+  tone(buzzer, 700, 750);
+}
+
 void waitForRouletteButton() {
   Serial.println(F("waiting for a roulette button press..."));
   int targetPlayer = random(0, numberOfPlayers+1);
@@ -114,8 +163,8 @@ void waitForRouletteButton() {
           shockPlayer(playerNum);
         }
         else {
-          setPlayerLEDsToOneColor(playerNum, CRGB::Green);
-          tone(buzzer, 700, 250);
+          LEDsPlayerOneColor(playerNum, CRGB::Green);
+          // playSuccess();
         }
       }
     }
@@ -123,7 +172,7 @@ void waitForRouletteButton() {
 }
 
 void playSequenceItem(int player) {
-  setPlayerLEDsToOneColor(player, CRGB::White);
+  LEDsPlayerOneColor(player, CRGB::White);
   tone(buzzer, 2500, 100);
   delay(sequenceDelay);
 }
@@ -214,7 +263,7 @@ void waitForReactions() {
         if(pressed[playerNum] == 0) {
           pressed[playerNum] = 1;
           pressedTotal = pressedTotal + 1;
-          setPlayerLEDPosition(playerNum, pressedTotal-1);
+          LEDsPositions(playerNum, pressedTotal-1);
           Serial.print(F("Button "));
           Serial.print(playerNum);
           Serial.print(F(" was pressed in "));
@@ -253,7 +302,7 @@ void shockingTime() {
       noTone(buzzer);  
       digitalWrite (shockPin, HIGH);
 
-      flashPlayerLEDsWithOneColor(playerNum, CRGB::Red);
+      LEDsPlayerFlashOneColor(playerNum, CRGB::Red);
     }
   }
 
@@ -276,13 +325,13 @@ void shockCheater(int playerNum) {
   Serial.println(F(" cheated."));
 
   noTone(buzzer);
-  setAllPlayerLEDsToOneColor(CRGB::Red);
+  LEDsPlayerFlashOneColor(CRGB::Red);
 
   digitalWrite (shockPin, HIGH);
   delay(1000); // cheaters get a full second
   digitalWrite (shockPin, LOW);
 
-  flashPlayerLEDsWithOneColor(playerNum, CRGB::Red);
+  LEDsPlayerFlashOneColor(playerNum, CRGB::Red);
 
   currentState = FINISHING;
 }
@@ -295,21 +344,25 @@ void shockPlayer(int playerNum) {
 
   noTone(buzzer);  
   digitalWrite (shockPin, HIGH);
+  LEDsPlayerFlashOneColor(playerNum, CRGB::Red);
+  playFail();
   delay(shockTime);
   digitalWrite (shockPin, LOW);
 
-  flashPlayerLEDsWithOneColor(playerNum, CRGB::Red);
 }
 
-void setPlayerLEDPosition(int player, int position) {
+void LEDsTest(CRGB color) {
+  for(int i = 0; i < 5 * numberOfLEDsPerPlayer; i++) {
+    leds[i] = color;
+    FastLED.show();
+    delay(50);
+  }
+}
+
+void LEDsPositions(int player, int position) {
   for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
     if(led <= position) {
-      if(player % 2 != 0) {
-        leds[player*numberOfLEDsPerPlayer+3-led] = CRGB::Blue;
-      }
-      else {
-        leds[player*numberOfLEDsPerPlayer+led] = CRGB::Blue;
-      }
+      leds[player*numberOfLEDsPerPlayer+led] = CRGB::Blue;
     }
     else {
       leds[player*numberOfLEDsPerPlayer+led] = CRGB::Black;
@@ -318,25 +371,25 @@ void setPlayerLEDPosition(int player, int position) {
   FastLED.show();
 }
 
-void setPlayerLEDsToOneColor(int player, CRGB color) {
+void LEDsPlayerOneColor(int player, CRGB color) {
   for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
     leds[player*numberOfLEDsPerPlayer+led] = color;
   }
   FastLED.show();
 }
 
-void flashPlayerLEDsWithOneColor(int player, CRGB color) {
+void LEDsPlayerFlashOneColor(int player, CRGB color) {
   for (int x = 0; x < 10; x++) {
-    setPlayerLEDsToOneColor(player, color);
+    LEDsPlayerOneColor(player, color);
     delay(150);
     
-    setPlayerLEDsToOneColor(player, CRGB::Black);
+    LEDsPlayerOneColor(player, CRGB::Black);
     delay(150);
   }
-  setPlayerLEDsToOneColor(player, color);
+  LEDsPlayerOneColor(player, color);
 }
 
-void setAllPlayerLEDsToOneColor(CRGB color) {
+void LEDsPlayerFlashOneColor(CRGB color) {
   for(int player = 0; player < numberOfPlayers; player++) {
     for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
       leds[player*numberOfLEDsPerPlayer+led] = color;
@@ -346,43 +399,46 @@ void setAllPlayerLEDsToOneColor(CRGB color) {
 }
 
 
-void sequentialLEDsForOnePlayer(int player, CRGB color) {
-  int nextLED = 3;
-  if(leds[3] != CRGB::Black) {
-    nextLED = 0;
-  }
-  else if(leds[2] != CRGB::Black) {
-    nextLED = 3;
-  }
-  else if(leds[1] != CRGB::Black) {
-    nextLED = 2;
-  }
-  if(nextLED == 0) {
-    for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
-      leds[player*numberOfLEDsPerPlayer] = CRGB::Black;
-    }
-  }
-  for(int led = 0; led < nextLED+1; led++) {
-    if(player % 2 != 0) {
-      leds[player*numberOfLEDsPerPlayer+3-led] = color;
+
+void LEDsAllSequential(CRGB color) {
+  for(int player = 0; player < numberOfPlayers; player++) {
+    if(LEDSequenceNumber < 0) {
+      FastLED.clear(true);
     }
     else {
-      leds[player*numberOfLEDsPerPlayer+led] = color;
+      for(int led = 0; led < LEDSequenceNumber+1; led++) {
+        leds[player*numberOfLEDsPerPlayer+led] = color;
+      }
     }
   }
-}
-
-void sequentialLEDsForAllPlayers(CRGB color) {
-  for(int player = 0; player < numberOfPlayers; player++) {
-    sequentialLEDsForOnePlayer(player, color);
+  LEDSequenceNumber++;
+  if(LEDSequenceNumber > numberOfLEDsPerPlayer-1) {
+    LEDSequenceNumber = -1;
   }
   FastLED.show();
-  delay(150);
+  delay(250);
+}
+
+void LEDsAllRadial(CRGB color) {
+  if(LEDSequenceNumber < 0) {
+    LEDSequenceNumber = 0;
+  }
+  int player = LEDSequenceNumber;
+  FastLED.clear(true);
+  for(int led = 0; led < numberOfLEDsPerPlayer; led++) {
+    leds[player*numberOfLEDsPerPlayer+led] = color;
+  }
+  LEDSequenceNumber++;
+  if(LEDSequenceNumber > numberOfPlayers-1) {
+    LEDSequenceNumber = 0;
+  }
+  FastLED.show();
+  delay(250);
 }
 
 //  This function loops over each pixel, calculates the adjusted 'clock' that this pixel should use, and calls 
 //  "CalculateOneTwinkle" on each pixel.  It then displays either the twinkle color of the background color, whichever is brighter.
-void drawTwinkles( CRGBSet& L) {
+void LEDsTwinkle( CRGBSet& L) {
   uint16_t PRNG16 = 11337; 
   uint32_t clock32 = millis();
  
@@ -474,7 +530,8 @@ void setup() {
   for(int shockPin = 0 ; shockPin < sizeof(shockPins); shockPin++) {
     pinMode(shockPins[shockPin], OUTPUT);
   }
-  setAllPlayerLEDsToOneColor(CRGB::Black);
+  LEDsTest(CRGB::Green);
+  FastLED.clear(true);
   Serial.println(F("Setup complete"));
 }
 
@@ -487,13 +544,13 @@ void loop() {
 
   while (digitalRead(buttonStart) == HIGH) {
     if(currentMode == MEMORY) {
-      drawTwinkles(leds);
+      LEDsTwinkle(leds);
     }
     if(currentMode == REACTION) {
-      sequentialLEDsForAllPlayers(CRGB::Blue);
+      LEDsAllSequential(CRGB::Green);
     }
     if(currentMode == ROULETTE) {      
-      sequentialLEDsForAllPlayers(CRGB::Green);
+      LEDsAllRadial(CRGB::Blue);
     }
     if(settingsChanged()) {
       reset();
@@ -504,7 +561,7 @@ void loop() {
 
   if(currentMode == ROULETTE) {
     Serial.println (F("Starting Russian roulette mode..."));
-    setAllPlayerLEDsToOneColor(CRGB::White);
+    LEDsPlayerFlashOneColor(CRGB::White);
     waitForRouletteButton();
     reset();
   }
@@ -515,7 +572,7 @@ void loop() {
     for (int i = 20; i < 255; i++) { // GAME START BUZZER SOUND
       tone(buzzer, i * 7);
       //setAllLEDs(i);
-      sequentialLEDsForAllPlayers(CRGB::Green);
+      LEDsAllSequential(CRGB::Green);
       delay(15);
     }
     noTone(buzzer);
@@ -528,7 +585,7 @@ void loop() {
     if(currentState == PLAYING) {
       Serial.println (F("Game start!"));
       startTime = millis();
-      setAllPlayerLEDsToOneColor(CRGB::White);
+      LEDsPlayerFlashOneColor(CRGB::White);
       tone(buzzer, 2500);
     
       waitForReactions();
@@ -551,7 +608,7 @@ void loop() {
 
   if(currentMode == MEMORY) {
     Serial.println (F("Starting memory game..."));
-    setAllPlayerLEDsToOneColor(CRGB::Blue);
+    LEDsPlayerFlashOneColor(CRGB::Blue);
     delay(1000);
     FastLED.clear(true);
     playSequence();
