@@ -17,8 +17,14 @@ This improved version supports 2-5 players and adds two new game modes: "Roulett
 - Sound
 
 # Play
+Insert 8 AA batteries into the compartment on the bottom of the game.  Begin by turning the power switch to On.  A series of LED annimations should appear and the Intensity digital display should show a number from 1.50 to 6.90.  
+
+__IMPORTANT: If the display shows more than 7 (volts) do not play the game.__
+
+Turn the intensity knob to the desired level.  The digital display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6.9 volts is the maximum and hurts.
+
 ## Reaction Mode
-Turn the game mode knob to Reaction and press the Number of Players button until the desired number (2-5) of player LEDs illuminate.  An LED animation (green sequence of lights for each active player) will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  The digital display shows the voltage.  Under 3 voltages is barely detectable.  3 volts is "normal".  Use above 3 volts at your own risk.  6 volts is the maximum and hurts.
+Turn the game mode knob to Reaction and press the Number of Players button until the desired number (2-5) of player LEDs illuminate.  An LED animation (green sequence of lights for each active player) will illuminate for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
 Press the Start button (big white button in center) to start a round of play.  A sound and animation will play, followed by a random length of quiet time (2-10 seconds) and then all the LEDs will turn white and a beep will sound.  Each player should press the button on the their controller as soon as they sense the lights and sound.  The LEDs will illuminate to indicate the order the buttons were pressed.  The player with the fastest reaction time will show 1 blue LED, the seconds fastest 2 blue LEDs, etc. until the last player.  That player will show 4 blinking red LEDs and will have received a 100 ms shock.
 
@@ -27,18 +33,20 @@ The game has cheat detection.  Any player who has their button depressed when th
 After 5 seconds, the game will again display LED animation and wait for the next press of the Start button for another round.
 
 ## Russian Roulette Mode
-Turn the game mode knob to Roulette and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs blue, one at a time, rotating around) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
+Turn the game mode knob to Roulette and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs blue, one at a time, rotating around) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.
 
 Press the Start button (big white button in center) to start a round of play.  In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otehrwise their LEDs will turn green.
 
-After 5 seconds, the game will again display LED animation and wait for the next button press with a new random target player.
+After 5 seconds, the game will again display the LED animation and wait for the next button press with a new random target player.
 
 ## Recall Mode
 Turn the game mode knob to Recall and select the desired number of players (2-5).  An LED animation will illuminate (random colored twinkles) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
-Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate in a color specific to that player, and a short sound will play.  That player has 3 seconds to press their button once.  If they do not press their button within 3 seconds their LEDs will illuminate red and flash and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players gain have 3 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked and turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
+Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate in a color specific to that player, and a short sound will play.  That player has 5 seconds to press their button once.  If they do not press their button within 5 seconds their LEDs will flash red and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  
 
-Five seconds after a mistake, the game will again display LED animation and wait for the net press of the Start button for another round.
+If the proper player presses their button (and only that player), the game progresses.  The same player's sound and LED will again illuminate, followed by a second player's LED and sound (or maybe the first player's twice -- it is random).  The players again have 5 seconds between each item in the sequence to press their button.  If the sequence is not repeated correctly, the offending player is shocked, their LEDS are turned red and the game is over.  If the sequence is mimicked correctly, the game continues with 3 items in the sequence, etc. until a player makes a mistake.  Note: the time between items in the sequence gets slightly shorter with each round.
+
+Five seconds after a mistake, the game will again display LED animation and wait for the next press of the Start button for another round.
 
 # Build
 The game uses an Arduino micro-controller to handle the logic.  The shock circuits are harvested from toy shock pens and use a flyback transformer and oscillator operating at between 2.5-6 volts.  The controllers house a momentary button and two polished aluminum electrodes along the sides.  The base houses the control knobs, voltage display, LEDs, and center start button.  Most of the parts are 3D printed in PLA.
@@ -56,13 +64,13 @@ The game uses an Arduino micro-controller to handle the logic.  The shock circui
 - [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 6)
 - [Aluminum Flat Plate Bar Stock 3 x 10 x 305mm T6511](https://www.amazon.com/dp/B0CZ4F77TL)
 - [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- [2N2222 NPN Transistor](https://en.wikipedia.org/wiki/2N2222) (Quantity 5)
+- [5V 4 Channel Relay Optocoupler Isolation Module]([[https://en.wikipedia.org/wiki/2N2222](https://www.amazon.com/dp/B07BDJJTLZ)](https://www.amazon.com/dp/B0B4N3SF9R)) (Quantity 5)
 - [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
 - [220 Ohm Resistor](https://www.amazon.com/dp/B07QK9ZBVZ) (Quantity 5)
 - Wire, solder, PLA filament, zip ties, screws, etc.
 
 # Electrical Circuit
-The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC Buck Converter.  The output of the buck converter is controlled by an "intensity" rotary 0-1k poteniometer knob, resulting in 2-6v DC output to drive the shock circuits.  The output voltage is displayed on a 3 digit 8-segment display.  The shock circuits use a flyback transformer (looks like a blue capacitor) and a small oscillator.  Each shock circuit is controlled by and isolated from the Arduino via a 2N2222 NPN transistor, pulling the base to ground and completing the circuit.  All buttons and switches are connected to GPIO pulled up pins on the Arduino and complete the circuit to ground.  The WS2812 LED strip uses 5v power from the Arduino and a single data GPIO pin to control the individually addressable LEDs.
+The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC Buck Converter.  The output of the buck converter is controlled by an "intensity" rotary 0-1k poteniometer knob, resulting in 2-7v DC output to drive the shock circuits.  The output voltage is displayed on a 3 digit 8-segment display.  The shock circuits use a flyback transformer (looks like a blue capacitor) and a small oscillator.  Each shock circuit is controlled by and isolated from the Arduino via opt-isolated relays.  All buttons and switches are connected to GPIO pulled up pins on the Arduino and complete the circuit to ground.  The WS2812 LED strip uses 5v power from the Arduino and a single data GPIO pin to control the individually addressable LEDs.
 
 <img width="1198" height="678" alt="image" src="https://github.com/user-attachments/assets/ff211c23-4eb7-4024-8486-9565b3ea921c" />
 
@@ -76,6 +84,7 @@ The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC 
 <img width="754" height="504" alt="image" src="https://github.com/user-attachments/assets/4eb01ff9-87ce-4d5b-b19e-353c741b00dd" />
 <img width="681" height="447" alt="image" src="https://github.com/user-attachments/assets/d7d9d3c0-115e-4b3b-942c-d51dd36f27ee" />
 <img width="748" height="640" alt="image" src="https://github.com/user-attachments/assets/286a0173-3df8-40f9-8351-cb6ba78d1af7" />
+<img width="708" height="538" alt="image" src="https://github.com/user-attachments/assets/31e67aa3-07a8-4148-966f-374ff044f835" />
 
 # Build
 ## 3D print all the parts
@@ -86,6 +95,7 @@ The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC 
 - Start Button Mount
 - Controller Handle (x5)
 - Controller Cover (x5)
+- Storage tray
 
 ## Shock Circuits
 - To build the shock circuit, disassemble a toy shock pin by unscrewing the tip and breaking the middle black portion from the silver top portion.
