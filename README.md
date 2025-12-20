@@ -1,6 +1,8 @@
 # R3 - A Shocking Game
 A reaction, roulette, and recall game with consequences
 
+<img width="1170" height="850" alt="image" src="https://github.com/user-attachments/assets/7adf0fb2-a625-4445-8a46-2b409839e039" />
+
 # Description
 This is an improvement over the ["Lightning Reaction Reloaded - Shocking Game"](https://www.amazon.com/dp/B0006B2Q50?ref=ppx_yo2ov_dt_b_fed_asin_title) available for $40 online.  In that game, players press the button on their controller when the game's random delay indicates.  The last player to respond gets an electric shock.  The game supports 2-4 players.
 
@@ -142,7 +144,9 @@ The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC 
 - Using a hot glue gun, glue the strips into the top of the game so that the LEDs align with the holes.
 - Cover each strip with tape.
 
-<img width="1040" height="841" alt="image" src="https://github.com/user-attachments/assets/77cb0e32-aae0-41e4-907b-70030ffdeb6f" />
+<img width="1127" height="847" alt="image" src="https://github.com/user-attachments/assets/e3ac9646-a357-422e-8ea9-f0aade4a01c3" />
+
+<img width="1042" height="844" alt="image" src="https://github.com/user-attachments/assets/9b2fb63e-d9aa-4205-97a2-110117ade754" />
 
 ## Start Button
 - CA glue the 12mm button switch to the start button mount panel with the pins sticking through the holes.
@@ -160,11 +164,11 @@ The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC 
 - Insert the digital voltage display into the top and secure with 2 m2 screws.
 - Insert the power toggle switch into the side of the top unit.
 
-<img width="478" height="741" alt="image" src="https://github.com/user-attachments/assets/eecc35b5-58fc-494f-8261-a186e5036b13" />
-
 ## Wiring
 - Thread each controller wire into the holes on the side of the top unit.
 - Connect the switches, controllers, etc. according to the diagram above.
+
+<img width="478" height="622" alt="image" src="https://github.com/user-attachments/assets/9d32ff9f-eac4-45e3-9963-890d270f4d46" />
 
 ## Programming
 - Download the code in the code folder to the Arduino
