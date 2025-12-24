@@ -53,6 +53,7 @@ const CRGB playerColors[MAX_PLAYERS] = {CRGB::Orange, CRGB::Blue, CRGB::Yellow, 
 const int playerTones[MAX_PLAYERS] = {NOTE_G3, NOTE_C4, NOTE_E4, NOTE_G4, NOTE_F4};
 int betweenRoundsDelay = 1500;
 int sequenceDelay = 750;
+int sequenceDecrement = 50;
 int sequence[1000];
 int sequenceLength = 0;
 
@@ -156,14 +157,14 @@ void repeatSequence() {
 
 void addItemToSequence() {
   FastLED.clear(true);
-  int nextPlayerInSequence = random(numberOfPlayers);
+  int nextPlayerInSequence = random(numberOfPlayers+1);
   Serial.print(F("player "));
   Serial.print(nextPlayerInSequence);
   Serial.println(F(" is next in the sequence"));
   sequence[sequenceLength] = nextPlayerInSequence;
   repeatSequenceItem(sequenceLength);
   sequenceLength++;
-  if(sequenceDelay > 200) { sequenceDelay = sequenceDelay - 10; } // Speed up as we go.  To a point.
+  if(sequenceDelay > 200) { sequenceDelay = sequenceDelay - sequenceDecrement; } // Speed up as we go.  To a point.
 }
 
 void logSequence(int sequenceNumber) {
