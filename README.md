@@ -1,17 +1,18 @@
-# R3 - A Shocking Game
-A reaction, roulette, and recall game with consequences
+# R^4 - A Shocking Game
+A reaction, recall, roulette, and random game with consequences
 
 <img width="1170" height="850" alt="image" src="https://github.com/user-attachments/assets/7adf0fb2-a625-4445-8a46-2b409839e039" />
 
 # Description
 This is an improvement over the ["Lightning Reaction Reloaded - Shocking Game"](https://www.amazon.com/dp/B0006B2Q50?ref=ppx_yo2ov_dt_b_fed_asin_title) available for $40 online.  In that game, players press the button on their controller when the game's random delay indicates.  The last player to respond gets an electric shock.  The game supports 2-4 players.
 
-This improved version supports 2-5 players and adds two new game modes: "Roulette" amd "Recall".  Roulette is a verison of Russian Roulette and Recall similar to the old [Simon Game](https://en.wikipedia.org/wiki/Simon_(game)) from the 1970s.  In this mode, players must repeat an ever longer sequence.  This first player to mess up the sequence is shocked.
+This improved version supports 2-5 players and adds three new game modes: "Recall", "Roulette", and "Random".  Recall similar to the old [Simon Game](https://en.wikipedia.org/wiki/Simon_(game)) from the 1970s.  In this mode, players must repeat an ever longer sequence.  This first player to mess up the sequence is shocked.  Roulette is a verison of Russian Roulette where one player presses their button and may or may not be shocked.  Random mode always shocks one player at random each round.
 
 # Features
 - Reaction Time game mode
-- Russian Roulette game mode
 - Recall Sequence game mode
+- Russian Roulette game mode
+- Random game mode
 - Up to 5 players
 - Variable intensity adjustment knob to control shock
 - Digital intensity display
@@ -34,15 +35,8 @@ The game has cheat detection.  Any player who has their button depressed when th
 
 After 5 seconds, the game will again display LED animation and wait for the next press of the Start button for another round.
 
-## Russian Roulette Mode
-Turn the game mode knob to Roulette and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs blue, one at a time, rotating around) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.
-
-Press the Start button (big white button in center) to start a round of play.  In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otehrwise their LEDs will turn green.
-
-After 5 seconds, the game will again display the LED animation and wait for the next button press with a new random target player.
-
 ## Recall Mode
-Turn the game mode knob to Recall and select the desired number of players (2-5).  An LED animation will illuminate (random colored twinkles) for each player.  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
+Turn the game mode knob to Recall and select the desired number of players (2-5).  An LED animation will illuminate (lighting up each player's LEDs in a random order).  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.  Turn the intensity knob to the desired level.  See above.
 
 Press the Start button (big white button in center) to start a round of play.  A single player's LEDs will illuminate in a color specific to that player, and a short sound will play.  That player has 5 seconds to press their button once.  If they do not press their button within 5 seconds their LEDs will flash red and they will receive a shock.  If a different player presses their button they will receive the same treatment.  Either way, the game is over at this point.  
 
@@ -50,31 +44,44 @@ If the proper player presses their button (and only that player), the game progr
 
 Five seconds after a mistake, the game will again display LED animation and wait for the next press of the Start button for another round.
 
+## Russian Roulette Mode
+Turn the game mode knob to Roulette and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs blue, one at a time, rotating around).  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.
+
+Press the Start button (big white button in center) to start a round of play.  In this mode, each player's LEDs illuminate white and the game waits for an active player to press their controller button.  When they do, they will receive a shock and their LEDs with blink red if they are the "target" player, otherwise their LEDs will turn green and no one will be shocked.
+
+After 5 seconds, the game will again display the LED animation and wait for the next button press with a new random target player.
+
+## Random Mode
+Turn the game mode knob to Random and select the desired number of players (2-5).  An LED animation will illuminate (each player's 4 LEDs cyan, in a random order).  Each player should pick up a controller near illuminated LEDs and grasp it so that their hand touches both aluminum strips.
+
+Press the Start button (big white button in center) to start a round of play.  A sound and animation will play, followed by a random length of quiet time (2-6 seconds) and then all the LEDs will turn white.  At this point,  one player will be shocked and their LEDs will turn red.  
+
+After 5 seconds, the game will again display the LED animation and wait for the next button press with a new random target player.
+
 # Build
-The game uses an Arduino micro-controller to handle the logic.  The shock circuits are harvested from toy shock pens and use a flyback transformer and oscillator operating at between 2.5-6 volts.  The controllers house a momentary button and two polished aluminum electrodes along the sides.  The base houses the control knobs, voltage display, LEDs, and center start button.  Most of the parts are 3D printed in PLA.
+The game uses an Arduino micro-controller to handle the logic.  The shock circuit is harvested from a toy shock pen and use a flyback transformer and oscillator operating at between 2.5-6 volts.  The controllers house a momentary button and two polished aluminum electrodes along the sides.  The base houses the control knobs, voltage display, LEDs, and center start button.  Most of the parts are 3D printed in PLA.
 
 # Parts List
 - [Arduino R4 Minima](https://www.amazon.com/Arduino-UNO-Minima-ABX00080-Connector/dp/B0C78K4CD4/ref=sr_1_3)
 - [Battery Holder (8 AA)](https://www.amazon.com/dp/B07WP1CYYW)
 - [Mini ON and Off Rocker Switch 12V 20A T85 2 Pin SPST](https://www.amazon.com/dp/B07S2QJKTX)
 - [Momentary Tactile Push Button, 12 x 12 mm x 4.3 mm](https://www.amazon.com/TWTADE-Momentary-Tactile-Button-Switch/dp/B07CG6HVY9)
-- [1 Pole 3 Position Rotary Switch (for game mode)](https://www.amazon.com/dp/B07JLVV478e)
+- [1 Pole 4 Position Rotary Switch (for game mode)](https://www.amazon.com/dp/B07JLRM2L7)
 - [1K Linear Rotary Potentiometer (for intensity)](https://www.amazon.com/dp/B082FCFSHX)
 - [LM2596 DC-DC Buck Converter Step Down Module Power Supply](https://www.amazon.com/Zixtec-LM2596-Converter-Module-1-25V-30V/dp/B07VVXF7YX)
 - [3 Wire 0.36" DC 0~30V Digital Voltmeter Digital Red LED Display](https://www.amazon.com/dp/B079N98PY4)
 - [WS2812B IC RGB Individual Addressable LED Strip Light](https://www.amazon.com/LOAMLIN-WS2812B-Individually-Addressable-Waterproof/dp/B0956C7KFR)
-- [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 6)
+- [Momentary Stainless Steel Push Button On/Off (High Head)](https://www.amazon.com/dp/B08L49F7DV) (Quantity 6)
 - [Aluminum Flat Plate Bar Stock 3 x 10 x 305mm T6511](https://www.amazon.com/dp/B0CZ4F77TL)
-- [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3?ref=ppx_yo2ov_dt_b_fed_asin_title)
-- [5V 4 Channel Relay Optocoupler Isolation Module](https://www.amazon.com/dp/B07BDJJTLZ) (Quantity 5)
-- [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7?ref=ppx_yo2ov_dt_b_fed_asin_title) (Quantity 5)
-- [220 Ohm Resistor](https://www.amazon.com/dp/B07QK9ZBVZ) (Quantity 5)
+- [22 Gauge 4 Conductor Electrical Wire](https://www.amazon.com/dp/B0CFJXMDT3)
+- [5V 6 Channel Relay Optocoupler Isolation Module](https://www.amazon.com/dp/B08RRTHTYQ)
+- [Toy Shock Pen](https://www.amazon.com/dp/B0DZWW5TX7)
 - Wire, solder, PLA filament, zip ties, screws, etc.
 
 # Electrical Circuit
-The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC Buck Converter.  The output of the buck converter is controlled by an "intensity" rotary 0-1k poteniometer knob, resulting in 2-7v DC output to drive the shock circuits.  The output voltage is displayed on a 3 digit 8-segment display.  The shock circuits use a flyback transformer (looks like a blue capacitor) and a small oscillator.  Each shock circuit is controlled by and isolated from the Arduino via opt-isolated relays.  All buttons and switches are connected to GPIO pulled up pins on the Arduino and complete the circuit to ground.  The WS2812 LED strip uses 5v power from the Arduino and a single data GPIO pin to control the individually addressable LEDs.
+The game uses 8 AA batteries for 12v DC to power the Ardunio and a LM2596 DC-DC Buck Converter.  The output of the buck converter is controlled by an "intensity" rotary 0-1k poteniometer knob, resulting in 2-7v DC output to drive the shock circuits.  The output voltage is displayed on a 3 digit 8-segment display.  The shock circuit uses a flyback transformer (looks like a blue capacitor) and a small oscillator.  A single shock circuit is controlled by and isolated from the Arduino via an opto-isolated relay and the output from the shock circuit is relayed to a player's controller also via opto-isolated relays.  All buttons and switches are connected to GPIO pulled up pins on the Arduino and complete the circuit to ground.  The WS2812 LED strip uses 5v power from the Arduino and a single data GPIO pin to control the individually addressable LEDs.
 
-<img width="1198" height="678" alt="image" src="https://github.com/user-attachments/assets/ff211c23-4eb7-4024-8486-9565b3ea921c" />
+<img width="2084" height="1440" alt="image" src="https://github.com/user-attachments/assets/2bce3a96-f432-4dc1-96e5-189352158c98" />
 
  # CAD Designs
  All components of the game were designed in Autodesk Fusion 360.
